@@ -311,8 +311,13 @@ static ssize_t ec_set_target_rpm(u8 idx, u32 *val)
 		.fan_idx = idx,
 	};
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
+	ret = cros_ec_command(ec, 1, EC_CMD_PWM_SET_FAN_TARGET_RPM, &params,
+			  sizeof(params), NULL, 0);
+#else
 	ret = cros_ec_cmd(ec, 1, EC_CMD_PWM_SET_FAN_TARGET_RPM, &params,
 			  sizeof(params), NULL, 0);
+#endif
 	if (ret < 0)
 		return -EIO;
 
@@ -331,8 +336,13 @@ static ssize_t ec_get_target_rpm(u8 idx, u32 *val)
 
 	// index isn't supported, it should only return fan 0's target
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
+	ret = cros_ec_command(ec, 0, EC_CMD_PWM_GET_FAN_TARGET_RPM, NULL, 0, &resp,
+			  sizeof(resp));
+#else
 	ret = cros_ec_cmd(ec, 0, EC_CMD_PWM_GET_FAN_TARGET_RPM, NULL, 0, &resp,
 			  sizeof(resp));
+#endif
 	if (ret < 0)
 		return -EIO;
 
@@ -422,8 +432,13 @@ static ssize_t ec_set_auto_fan_ctrl(u8 idx)
 		.fan_idx = idx,
 	};
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
+	ret = cros_ec_command(ec, 1, EC_CMD_THERMAL_AUTO_FAN_CTRL, &params,
+			  sizeof(params), NULL, 0);
+#else
 	ret = cros_ec_cmd(ec, 1, EC_CMD_THERMAL_AUTO_FAN_CTRL, &params,
 			  sizeof(params), NULL, 0);
+#endif
 	if (ret < 0)
 		return -EIO;
 
@@ -466,8 +481,13 @@ static ssize_t ec_set_fan_duty(u8 idx, u32 *val)
 		.fan_idx = idx,
 	};
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
+	ret = cros_ec_command(ec, 1, EC_CMD_PWM_SET_FAN_DUTY, &params,
+			  sizeof(params), NULL, 0);
+#else
 	ret = cros_ec_cmd(ec, 1, EC_CMD_PWM_SET_FAN_DUTY, &params,
 			  sizeof(params), NULL, 0);
+#endif
 	if (ret < 0)
 		return -EIO;
 
@@ -540,8 +560,13 @@ static ssize_t framework_privacy_show(struct device *dev,
 
 	struct ec_response_privacy_switches_check resp;
 
+#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 1, 0)
+	ret = cros_ec_command(ec, 0, EC_CMD_PRIVACY_SWITCHES_CHECK_MODE, NULL, 0,
+			  &resp, sizeof(resp));
+#else
 	ret = cros_ec_cmd(ec, 0, EC_CMD_PRIVACY_SWITCHES_CHECK_MODE, NULL, 0,
 			  &resp, sizeof(resp));
+#endif
 	if (ret < 0)
 		return -EIO;
 
