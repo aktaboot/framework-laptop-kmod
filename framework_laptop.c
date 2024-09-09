@@ -537,7 +537,8 @@ static ssize_t ec_count_fans(size_t *val)
 	if (ret < 0)
 		return -EIO;
 
-	for (size_t i = 0; i < EC_FAN_SPEED_ENTRIES; i++) {
+	size_t i;
+	for (i = 0; i < EC_FAN_SPEED_ENTRIES; i++) {
 		if (fans[i] == EC_FAN_SPEED_NOT_PRESENT) {
 			*val = i;
 			return 0;
